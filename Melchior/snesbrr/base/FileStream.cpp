@@ -2,7 +2,10 @@
    Common Development and Distribution License, Version 1.0 only. */
 
 #include "FileStream.h"
+#include "Stream.h"
 #include "StreamException.h"
+#include "basetypes.h"
+#include <cstdio>
 
 #ifdef WIN32
 #include <io.h>

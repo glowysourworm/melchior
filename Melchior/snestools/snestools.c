@@ -26,7 +26,6 @@
 ---------------------------------------------------------------------------------*/
 
 #include <ctype.h>
-#include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -34,8 +33,8 @@
 #include "errors.h"
 
 // DEFINES
-#define SNESTOOLSVERSION __BUILD_VERSION
-#define SNESTOOLSDATE __BUILD_DATE
+#define SNESTOOLSVERSION "Developer"
+#define SNESTOOLSDATE __DATE__
 
 #define LOROM_HEADER 0x7fc0
 #define HIROM_HEADER 0xffc0

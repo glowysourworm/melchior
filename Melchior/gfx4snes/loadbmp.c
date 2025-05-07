@@ -30,8 +30,6 @@
 
 #include <limits.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 
 // This returns the description of a numerical error code in English. This is also

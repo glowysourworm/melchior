@@ -27,10 +27,12 @@
 	
 ***************************************************************************/
 #include <stdbool.h>
-#include <stdlib.h>
 #include <stdio.h>
 
 #include "images.h"
+#include "loadbmp.h"
+#include "lodepng.h"
+#include <malloc.h>
 
 t_image snesimage={0};														// current image converted
 

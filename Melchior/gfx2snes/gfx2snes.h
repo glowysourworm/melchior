@@ -1,8 +1,8 @@
 #ifndef GFX2SNES_H
 #define GFX2SNES_H
 
-#define GFX2SNESVERSION __BUILD_VERSION
-#define GFX2SNESDATE __BUILD_DATE
+#define GFX2SNESVERSION "Developer"
+#define GFX2SNESDATE __DATE__
 
 #define HI_BYTE(n) (((int)n >> 8) & 0x00ff) // extracts the hi-byte of a word
 #define LOW_BYTE(n) ((int)n & 0x00ff)       // extracts the low-byte of a word

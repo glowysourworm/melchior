@@ -27,8 +27,6 @@
 
 ***************************************************************************/
 #include <stdio.h>
-#include <memory.h>
-#include <stdlib.h>
 
 #include "loadimg.h"
 
@@ -442,7 +440,7 @@ int TGA_Load(char *filename, pcx_picture_ptr image)
 int PNG_Load(char *filename, pcx_picture_ptr image)
 {
     unsigned error, index, i, sz, bpp;
-    unsigned char *pngimage;
+    unsigned char *pngimage = 0;
     unsigned char *png = 0;
     size_t pngsize;
     LodePNGState state;

@@ -432,7 +432,7 @@ struct cute_tiled_map_t
 #define CUTE_TILED_H
 #endif
 
-#ifdef CUTE_TILED_IMPLEMENTATION
+//#ifdef CUTE_TILED_IMPLEMENTATION
 #ifndef CUTE_TILED_IMPLEMENTATION_ONCE
 #define CUTE_TILED_IMPLEMENTATION_ONCE
 
@@ -565,7 +565,7 @@ struct strpool_embedded_t
 #ifndef STRPOOL_EMBEDDED_IMPLEMENTATION_ONCE
 #define STRPOOL_EMBEDDED_IMPLEMENTATION_ONCE
 
-#include <stddef.h>
+#include <malloc.h>
 
 #ifndef STRPOOL_EMBEDDED_ASSERT
     #include <assert.h>
@@ -3030,7 +3030,7 @@ void cute_tiled_free_external_tileset(cute_tiled_tileset_t* tileset)
 }
 
 #endif // CUTE_TILED_IMPLEMENTATION_ONCE
-#endif // CUTE_TILED_IMPLEMENTATION
+//#endif // CUTE_TILED_IMPLEMENTATION
 
 /*
 	------------------------------------------------------------------------------

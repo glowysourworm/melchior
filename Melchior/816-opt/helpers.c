@@ -13,7 +13,21 @@
  *
  */
 
+#include "../libregex/regex.h"
 #include "helpers.h"
+#include <malloc.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <string.h>
+
+/*
+#ifndef WIN32
+#include "regex-fix.h"
+#else
+#include <regex.h>
+#endif
+*/
 
 /**
  * @brief Free pointers.
@@ -88,28 +102,6 @@ int isInText(const char *source, const char *pattern)
         return 0; // handle NULL inputs
 
     return strstr(source, pattern) != NULL;
-}
-
-/**
- * @brief Compare two numbers.
- * @param a First number.
- * @param b Second number.
- * @return The smallest number.
- */
-int min(const int a, const int b)
-{
-    return a < b ? a : b;
-}
-
-/**
- * @brief Compare two numbers.
- * @param a First number.
- * @param b Second number.
- * @return The bigger number.
- */
-int max(const int a, const int b)
-{
-    return a > b ? a : b;
 }
 
 /**
@@ -203,6 +195,81 @@ char *sliceStr(char *str, int slice_from, int slice_to)
 }
 
 /**
+ * @brief Wrapper to match groups with regex.
+ * @param string The string.
+ * @param regex The POSIX regex.
+ * @param maxGroups The maximum number of groups to match.
+ * @return A structure (dynArray).
+ */
+dynArray regexMatchGroups(char* string, char* regex, const size_t maxGroups)
+{
+    /*
+        Inspired by Ianmackinnon:
+        https://gist.github.com/ianmackinnon/3294587
+    */
+
+    regex_t regexCompiled;
+    regmatch_t groupArray[2];
+
+    dynArray regexgroup;
+    regexgroup.used = 0;
+
+    int re = regcomp(&regexCompiled, regex, REG_EXTENDED);
+
+    if (re)
+    {
+        fprintf(stderr, "Could not compile regular expression.\n");
+        exit(EXIT_FAILURE);
+    };
+
+    re = regexec(&regexCompiled, string, maxGroups, groupArray, 0);
+
+    if (!re)
+    {
+        size_t len, g;
+        char* stringCopy = (char*) malloc(strlen(string) + 1);
+        strcpy(stringCopy, string);
+
+        regexgroup.arr = (char**) malloc(maxGroups * sizeof(char*));
+
+        for (g = 0; g < maxGroups; g++)
+        {
+            if ((size_t) groupArray[g].rm_so == (size_t) -1)
+            {
+                break; // No more groups
+            }
+
+            len = groupArray[g].rm_eo - groupArray[g].rm_so;
+
+            /* allocate storage for line */
+            regexgroup.arr[regexgroup.used] = (char*) malloc(len + 1);
+            memcpy(regexgroup.arr[regexgroup.used], stringCopy + groupArray[g].rm_so, len);
+            regexgroup.arr[regexgroup.used][len] = '\0';
+            regexgroup.used += 1;
+        }
+
+        free(stringCopy);
+        regfree(&regexCompiled);
+
+        return regexgroup;
+    }
+    else if (re == REG_NOMATCH)
+    {
+        regfree(&regexCompiled);
+
+        regexgroup.arr = NULL;
+        return regexgroup;
+    }
+    else
+    {
+        char msgbuf[100];
+        regerror(re, &regexCompiled, msgbuf, sizeof(msgbuf));
+        fprintf(stderr, "Regex match failed: %s\n", msgbuf);
+        exit(EXIT_FAILURE);
+    }
+}
+
+/**
  * @brief Replace a substring in string by another substring.
  * @param str The string.
  * @param orig The substring to replace.
@@ -270,81 +337,6 @@ char *splitStr(char *str, char *sep, size_t pos)
     }
 
     return NULL;
-}
-
-/**
- * @brief Wrapper to match groups with regex.
- * @param string The string.
- * @param regex The POSIX regex.
- * @param maxGroups The maximum number of groups to match.
- * @return A structure (dynArray).
- */
-dynArray regexMatchGroups(char *string, char *regex, const size_t maxGroups)
-{
-    /*
-        Inspired by Ianmackinnon:
-        https://gist.github.com/ianmackinnon/3294587
-    */
-
-    regex_t regexCompiled;
-    regmatch_t groupArray[maxGroups];
-
-    dynArray regexgroup;
-    regexgroup.used = 0;
-
-    int re = regcomp(&regexCompiled, regex, REG_EXTENDED);
-
-    if (re)
-    {
-        fprintf(stderr, "Could not compile regular expression.\n");
-        exit(EXIT_FAILURE);
-    };
-
-    re = regexec(&regexCompiled, string, maxGroups, groupArray, 0);
-
-    if (!re)
-    {
-        size_t len, g;
-        char *stringCopy = malloc(strlen(string) + 1);
-        strcpy(stringCopy, string);
-
-        regexgroup.arr = malloc(maxGroups * sizeof(char *));
-
-        for (g = 0; g < maxGroups; g++)
-        {
-            if ((size_t)groupArray[g].rm_so == (size_t)-1)
-            {
-                break; // No more groups
-            }
-
-            len = groupArray[g].rm_eo - groupArray[g].rm_so;
-
-            /* allocate storage for line */
-            regexgroup.arr[regexgroup.used] = malloc(len + 1);
-            memcpy(regexgroup.arr[regexgroup.used], stringCopy + groupArray[g].rm_so, len);
-            regexgroup.arr[regexgroup.used][len] = '\0';
-            regexgroup.used += 1;
-        }
-
-        free(stringCopy);
-        regfree(&regexCompiled);
-
-        return regexgroup;
-    }
-    else if (re == REG_NOMATCH)
-    {
-        regfree(&regexCompiled);
-
-        regexgroup.arr = NULL;
-        return regexgroup;
-    }
-    else
-    {
-        char msgbuf[100];
-        regerror(re, &regexCompiled, msgbuf, sizeof(msgbuf));
-        fprintf(stderr, "Regex match failed: %s\n", msgbuf);
-        exit(EXIT_FAILURE);
-    }
 }
 
 /**

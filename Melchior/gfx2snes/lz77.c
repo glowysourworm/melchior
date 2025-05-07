@@ -64,9 +64,7 @@
     that this code may have on you, your computer, your sanity, your dog, 
     and anything else that you can think of. Use it at your own risk."
 */
-#include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
 
 /// === TYPES =========================================================
 

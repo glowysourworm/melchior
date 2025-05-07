@@ -33,9 +33,10 @@
 
 #define CUTE_TILED_IMPLEMENTATION
 #include "cute_tiled.h"
+#include <string.h>
 
-#define TMX2SNESVERSION __BUILD_VERSION
-#define TMX2SNESDATE __BUILD_DATE
+#define TMX2SNESVERSION "Developer"
+#define TMX2SNESDATE __DATE__
 
 #define HI_BYTE(n) (((int)n >> 8) & 0x00ff) // extracts the hi-byte of a word
 #define LOW_BYTE(n) ((int)n & 0x00ff)       // extracts the low-byte of a word

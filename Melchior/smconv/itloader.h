@@ -1,29 +1,34 @@
 #ifndef ITLOADER_H
 #define ITLOADER_H
 
-#include "inputdata.h"
+#include "basetypes.h"
 #include "io.h"
+#include <string>
+#include <vector>
 
-namespace ITLoader {
+namespace ITLoader
+{
 
-	class Pattern {
+	class Pattern
+	{
 
 	public:
-		Pattern( IO::File &file );
+		Pattern(IO::File& file);
 		Pattern();
 		~Pattern();
 
 		u16 DataLength;
 		u16 Rows;
-		u8 *Data;
+		u8* Data;
 	};
 
-	class SampleData {
+	class SampleData
+	{
 
 	public:
 
 		SampleData();
-		SampleData( const char* );
+		SampleData(const char*);
 
 		bool Bits16;
 		int Length;
@@ -37,17 +42,19 @@ namespace ITLoader {
 		bool BidiLoop;
 		bool BidiSustain;
 
-		union {
+		union
+		{
 			s8* Data8;
 			s16* Data16;
 		};
 	};
 
-	class Sample {
+	class Sample
+	{
 
-		void LoadData( IO::File &f );
+		void LoadData(IO::File& f);
 	public:
-		Sample( IO::File &f );
+		Sample(IO::File& f);
 		~Sample();
 
 		char Name[27];
@@ -72,20 +79,23 @@ namespace ITLoader {
 		SampleData Data;
 	};
 
-	typedef struct {
+	typedef struct
+	{
 		u8	Note;
 		u8	Sample;
 	} NotemapEntry;
 
-	typedef struct {
+	typedef struct
+	{
 		u8	y;
 		u16	x;
 	} EnvelopeEntry;
 
-	class Envelope {
+	class Envelope
+	{
 
 	public:
-		Envelope( IO::File & );
+		Envelope(IO::File&);
 		bool Enabled;
 		bool Loop;
 		bool Sustain;
@@ -101,10 +111,11 @@ namespace ITLoader {
 		EnvelopeEntry Nodes[25];
 	};
 
-	class Instrument {
+	class Instrument
+	{
 
 	public:
-		Instrument( IO::File & );
+		Instrument(IO::File&);
 		~Instrument();
 
 		char Name[27];
@@ -130,17 +141,18 @@ namespace ITLoader {
 		u8	MidiProgram;
 		u16 MidiBank;
 
-		NotemapEntry Notemap[ 120 ];
+		NotemapEntry Notemap[120];
 
-		Envelope *VolumeEnvelope;
-		Envelope *PanningEnvelope;
-		Envelope *PitchEnvelope;
+		Envelope* VolumeEnvelope;
+		Envelope* PanningEnvelope;
+		Envelope* PitchEnvelope;
 	};
 
-	class Module {
+	class Module
+	{
 
 	public:
-		Module( const char *filename );
+		Module(const char* filename);
 		~Module();
 
 		std::string Filename;
@@ -164,26 +176,27 @@ namespace ITLoader {
 		u8 PWD;
 
 		u16 MessageLength;
-		char *Message;
+		char* Message;
 
 		int ChannelPan[64];
 		int ChannelVolume[64];
 
 		int Orders[256];
 
-		Instrument **Instruments;
-		Sample **Samples;
-		Pattern **Patterns;
+		Instrument** Instruments;
+		Sample** Samples;
+		Pattern** Patterns;
 	};
 
 	// conversion data handler
-	class Bank {
+	class Bank
+	{
 
 	public:
-		Bank( const std::vector<const char *> &files );
+		Bank(const std::vector<const char*>& files);
 		~Bank();
-		void AddModule( const char *filename );
-		void AddSound( const char *filename );
+		void AddModule(const char* filename);
+		void AddSound(const char* filename);
 
 		std::vector<Module*> modules;
 		std::vector<SampleData*> sounds;

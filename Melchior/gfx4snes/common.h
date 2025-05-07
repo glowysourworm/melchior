@@ -1,6 +1,8 @@
 #ifndef _GFX4SNES_COMMON_H
 #define _GFX4SNES_COMMON_H
 
+#include <stdio.h>
+
 #define HI_BYTE(n) (((int) (n) >> 8) & 0x00ff)                 // extracts the hi-byte of a word
 #define LOW_BYTE(n) ((int) (n) & 0x00ff)                       // extracts the low-byte of a word
 

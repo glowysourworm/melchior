@@ -9,10 +9,10 @@ http://www.apache.org/licenses/LICENSE-2.0
  */
 
 #include "cmdparser.h"
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include <unistd.h>
 // isatty
 #if defined(__GLIBC__)
 #include <unistd.h>
@@ -22,6 +22,9 @@ http://www.apache.org/licenses/LICENSE-2.0
 #define isatty _isatty
 #define fileno _fileno
 #endif
+#include <stdio.h>
+#include <malloc.h>
+#include <string.h>
 
 // ============================================================================
 // utils

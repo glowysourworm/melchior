@@ -28,9 +28,19 @@
 ***************************************************************************/
 #include <stdlib.h>
 
+#include "cmdparser.h"
 #include "gfx4snes.h"
+#include "images.h"
+#include "palettes.h"
+#include <malloc.h>
+#include <stdio.h>
+#include <time.h>
+#include <stdbool.h>
 
 //-------------------------------------------------------------------------------------------------
+/* [glowysourworm] Treating programming these differently. So, not going to need the C compiler, or the command line. Compilation wasn't liking 
+*				   this one for non-const initializer.
+* 
 static cmdp_command_st gfx4snes_command = {
     .doc = "Usage: gfx4snes [options] -i file...\n"
            "  where file is a 256 color PNG or BMP file"
@@ -68,9 +78,10 @@ static cmdp_command_st gfx4snes_command = {
         },
     .fn_process = argument_callback,
 };
+*/
 
 cmdp_ctx gfx4snes_ctx = {0};																		// contect for command line options
-t_gfx4snes_args gfx4snes_args={0};																	// generic struct for all arguments
+t_gfx4snes_args gfx4snes_args={0};															// generic struct for all arguments
 
 int palette_snes[256];					                        									// palette in snes format (5bits RGB)
 unsigned short *map_snes=NULL;																		// map in snes format (16 bits table)
@@ -100,16 +111,19 @@ int main(int argc, const char **argv)
 	// check if no parameters
 	if (argc <= 1) 
 	{
-        cmdp_help(&gfx4snes_command);
+		// [glowysourworm] "Developer" version - code only
+        //cmdp_help(&gfx4snes_command);
         return(EXIT_FAILURE );
     }
 
 	// get command line options (argument_callback is called by default)
     cmdp_set_default_context(&gfx4snes_ctx);
-	parseret=cmdp_run(argc - 1,(char **) (argv + 1), &gfx4snes_command, &gfx4snes_ctx);
+	
+	// [glowysourworm] TODO: "Developer" version - code only (TODO: Run based on non-command line use; but fix this path also!)
+	//parseret=cmdp_run(argc - 1,(char **) (argv + 1), &gfx4snes_command, &gfx4snes_ctx);
 
 	// go out if error
-	if (parseret) 
+	if (/*parseret*/ true)
 	{
 		exit(EXIT_FAILURE);
 	}

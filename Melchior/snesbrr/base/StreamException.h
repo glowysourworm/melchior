@@ -9,29 +9,29 @@
 namespace base
 {
 
-    class StreamException : public std::exception
-    {
-    public:
-        virtual ~StreamException() throw();
-    };
+	class StreamException : public std::exception
+	{
+	public:
+		virtual ~StreamException() throw();
+	};
 
-    class StreamClosedException : public StreamException
-    {
-    public:
-        virtual ~StreamClosedException() throw();
-    };
+	class StreamClosedException : public StreamException
+	{
+	public:
+		virtual ~StreamClosedException() throw();
+	};
 
-    class StreamReadException : public StreamException
-    {
-    public:
-        virtual ~StreamReadException() throw();
-    };
+	class StreamReadException : public StreamException
+	{
+	public:
+		virtual ~StreamReadException() throw();
+	};
 
-    class StreamWriteException : public StreamException
-    {
-    public:
-        virtual ~StreamWriteException() throw();
-    };
+	class StreamWriteException : public StreamException
+	{
+	public:
+		virtual ~StreamWriteException() throw();
+	};
 
 } // base
 

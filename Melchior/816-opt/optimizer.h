@@ -3,8 +3,8 @@
 
 #include "helpers.h"
 
-#define BINVERSION __BUILD_VERSION
-#define BINDATE __BUILD_DATE
+#define BINVERSION "Developer"
+#define BINDATE __DATE__
 
 /*!
  * @brief Define comment for ASM files

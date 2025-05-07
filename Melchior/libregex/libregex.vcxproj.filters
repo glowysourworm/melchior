@@ -15,25 +15,31 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="helpers.h">
+    <ClInclude Include="regex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="optimizer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="regex-polyfill.h">
+    <ClInclude Include="tre.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="helpers.c">
+    <ClCompile Include="regcomp.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.c">
+    <ClCompile Include="regerror.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="optimizer.c">
+    <ClCompile Include="regexec.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="regmatch.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tre-mem.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="readme.txt" />
   </ItemGroup>
 </Project>

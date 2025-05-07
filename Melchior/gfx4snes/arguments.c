@@ -27,6 +27,9 @@
 	
 ***************************************************************************/
 #include "arguments.h"
+#include "cmdparser.h"
+#include "gfx4snes.h"
+#include <stdio.h>
 
 char errormessage_arg[256];				    								// error message if argument is not correct
 

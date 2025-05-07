@@ -1,14 +1,13 @@
 /* The contents of this file are subject to the terms of the
    Common Development and Distribution License, Version 1.0 only. */
 
-#include <cstdio>
-#include <cstring>
-#include <exception>
-#include "base/basetypes.h"
-#include "base/FileStream.h"
-#include "base/StreamException.h"
-#include "base/OptionParser.h"
+#include "../base/FileStream.h"
+#include "../base/OptionParser.h"
+#include "../base/StreamException.h"
+#include "../base/basetypes.h"
 #include "BrrCodec.h"
+#include <cstdio>
+#include <exception>
 
 using namespace base;
 using namespace base::types;

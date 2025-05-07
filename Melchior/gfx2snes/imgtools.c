@@ -27,11 +27,10 @@
 
 ***************************************************************************/
 #include <stdio.h>
-#include <memory.h>
-#include <stdlib.h>
 
-#include "imgtools.h"
 #include "gfx2snes.h"
+#include "imgtools.h"
+#include "loadimg.h"
 
 unsigned char *ArrangeBlocks(unsigned char *img, int width, int height,
                              int size, int *xsize, int *ysize, int new_width, int border)

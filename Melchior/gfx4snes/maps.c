@@ -27,13 +27,13 @@
 	
 ***************************************************************************/
 #include <stdbool.h>
-#include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
 
 #include "maps.h"
 
 #include "common.h"
+#include <malloc.h>
 
 //-------------------------------------------------------------------------------------------------
 // imgbuf = image buffer

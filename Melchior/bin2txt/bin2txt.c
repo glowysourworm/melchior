@@ -28,9 +28,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <corecrt.h>
 
-#define BIN2TXTVERSION __BUILD_VERSION
-#define BIN2TXTDATE __BUILD_DATE
+#define BIN2TXTVERSION "Developer"
+#define BIN2TXTDATE __DATE__
 
 //// M A I N   V A R I A B L E S ////////////////////////////////////////////////
 int convformat = 1;      // conversion formation (1=c , 2 = asm)
@@ -43,6 +44,7 @@ char filename[256];      // output filename
 //// F U N C T I O N S //////////////////////////////////////////////////////////
 
 #ifndef __HAS_STRUPR
+/*  using _strupr
 void strupr(char *str)
 {
     while (*str)
@@ -51,6 +53,7 @@ void strupr(char *str)
         str++;
     }
 }
+*/
 #endif
 
 //////////////////////////////////////////////////////////////////////////////
@@ -206,7 +209,7 @@ int main(int argc, char **argv)
         fprintf(fpo, "// binary file size: %d bytes\n", filesize);
         fprintf(fpo, "// converted the %s", asctime (local_time));
         fprintf(fpo, "//----------------------------------------------------------------------\n\n");
-        strupr(filebase);
+        _strupr(filebase);  //C4996 MSFT Compiler
         fprintf(fpo, "#ifndef %s_INC_\n", filebase);
         fprintf(fpo, "#define %s_INC_\n\n", filebase);
         fprintf(fpo, "#define %s_SIZE 0x%x\n\n", filebase, filesize);
@@ -239,7 +242,7 @@ int main(int argc, char **argv)
         fprintf(fpo, "; converted the %s", asctime (local_time));
         fprintf(fpo, ";----------------------------------------------------------------------\n\n");
         fprintf(fpo, ".SECTION \".%s\" SUPERFREE\n\n", filebase);
-        strupr(filebase);
+        _strupr(filebase); // C4996 MSFT Compiler
         fprintf(fpo, ".define %s_SIZE %xh\n\n", filebase, filesize);
         fprintf(fpo, "%s:\n", filebase);
 

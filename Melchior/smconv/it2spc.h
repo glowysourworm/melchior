@@ -1,46 +1,56 @@
 #ifndef IT2SPC_H
 #define IT2SPC_H
 
+#include "basetypes.h"
+#include "io.h"
 #include "itloader.h"
+#include <string>
+#include <vector>
 
-namespace IT2SPC {
+namespace IT2SPC
+{
 
 	//---------------------------------------------
-	class Source {
-	//---------------------------------------------
+	class Source
+	{
+		//---------------------------------------------
 	private:
 		u16		Length;
 		u16		Loop;
-		u8		*Data;
+		u8* Data;
 
 		double	TuningFactor;
 
 	public:
 		Source(
-			const ITLoader::SampleData & );
+			const ITLoader::SampleData&);
 		~Source();
 
 		std::string id;
 
-		bool	Compare( const Source& ) const;
-		void	Export( IO::File &, bool ) const;
+		bool	Compare(const Source&) const;
+		void	Export(IO::File&, bool) const;
 
-		int		GetDataLength() const {
+		int		GetDataLength() const
+		{
 			return Length;
 		}
 
-		int GetLoopPoint() const {
+		int GetLoopPoint() const
+		{
 			return Loop;
 		}
 
-		double GetTuningFactor() const {
+		double GetTuningFactor() const
+		{
 			return TuningFactor;
 		}
 	};
 
 	//---------------------------------------------
-	class Sample {
-	//---------------------------------------------
+	class Sample
+	{
+		//---------------------------------------------
 	private:
 		u8		DefaultVolume;
 		u8		GlobalVolume;
@@ -49,20 +59,22 @@ namespace IT2SPC {
 		u8		SetPan;
 
 	public:
-		Sample( const ITLoader::Sample &, int, double );
+		Sample(const ITLoader::Sample&, int, double);
 
-		void Export( IO::File & ) const;
+		void Export(IO::File&) const;
 	};
 
-	typedef struct{
+	typedef struct
+	{
 		u8	y;
 		u8	duration;
 		s16 delta;
 	} EnvelopeNode;
 
 	//---------------------------------------------
-	class Instrument {
-	//---------------------------------------------
+	class Instrument
+	{
+		//---------------------------------------------
 	private:
 		u8		Fadeout;
 		u8		SampleIndex;
@@ -72,40 +84,44 @@ namespace IT2SPC {
 		u8		EnvelopeSustain;
 		u8		EnvelopeLoopStart;
 		u8		EnvelopeLoopEnd;
-		EnvelopeNode *EnvelopeData;
+		EnvelopeNode* EnvelopeData;
 
 	public:
-		Instrument( const ITLoader::Instrument & );
+		Instrument(const ITLoader::Instrument&);
 		~Instrument();
 
-		int GetExportSize() const {
-			return 5 + (!EnvelopeLength) ? 0 : (3 + (EnvelopeLength/4) * 4);
+		int GetExportSize() const
+		{
+			return 5 + (!EnvelopeLength) ? 0 : (3 + (EnvelopeLength / 4) * 4);
 		}
 
-		void Export( IO::File & ) const;
+		void Export(IO::File&) const;
 	};
 
 	//---------------------------------------------
-	class Pattern {
-	//---------------------------------------------
+	class Pattern
+	{
+		//---------------------------------------------
 	private:
 		u8		Rows;
 
 		std::vector<u8> Data;
 	public:
-		Pattern( ITLoader::Pattern & );
+		Pattern(ITLoader::Pattern&);
 		~Pattern();
 
-		int GetExportSize() {
+		int GetExportSize()
+		{
 			return 1 + Data.size();
 		}
 
-		void Export( IO::File &file ) const;
+		void Export(IO::File& file) const;
 	};
 
 	//---------------------------------------------
-	class Module {
-	//---------------------------------------------
+	class Module
+	{
+		//---------------------------------------------
 		u8	InitialVolume;
 		u8	InitialTempo;
 		u8	InitialSpeed;
@@ -127,15 +143,15 @@ namespace IT2SPC {
 		std::vector<Sample*> Samples;
 
 
-		void ParseSMOption( const char * );
-		void ParseSMOptions( const ITLoader::Module & );
+		void ParseSMOption(const char*);
+		void ParseSMOptions(const ITLoader::Module&);
 
 	public:
 		Module(
-			const ITLoader::Module &,
-			const std::vector<u16> &,
-			const std::vector<u8> &,
-			const std::vector<Source*> & );
+			const ITLoader::Module&,
+			const std::vector<u16>&,
+			const std::vector<u8>&,
+			const std::vector<Source*>&);
 
 		~Module();
 
@@ -143,34 +159,36 @@ namespace IT2SPC {
 		std::vector<u16> SourceList;
 		u32 totalsize;
 
-		int GetExportSize_Header() const {
+		int GetExportSize_Header() const
+		{
 			return 616;
 		}
 
-		void Export( IO::File &file, bool ) const;
+		void Export(IO::File& file, bool) const;
 	};
 
 	//---------------------------------------------
-	class Bank {
-	//---------------------------------------------
+	class Bank
+	{
+		//---------------------------------------------
 		std::vector<Module*> Modules;
 		std::vector<Source*> Sources;
 
 	public:
-		Bank( const ITLoader::Bank &, bool, bool );
+		Bank(const ITLoader::Bank&, bool, bool);
 		~Bank();
 
-		void AddModule( const ITLoader::Module & );
-		int AddSource( Source * );
-		void AddSource( const ITLoader::SampleData & );
+		void AddModule(const ITLoader::Module&);
+		int AddSource(Source*);
+		void AddSource(const ITLoader::SampleData&);
 
 		bool HiROM;
 
-		void Export( const char * ) const;
-		void ExportASM( const char *, const char * ) const;
-		void ExportINC( const char * ) const;
+		void Export(const char*) const;
+		void ExportASM(const char*, const char*) const;
+		void ExportINC(const char*) const;
 
-		void MakeSPC( const char * ) const;
+		void MakeSPC(const char*) const;
 	};
 }
 

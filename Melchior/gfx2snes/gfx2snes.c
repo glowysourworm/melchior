@@ -26,16 +26,16 @@
   BMP BI_RLE8 compression support by Andrey Beletsky
 
 ***************************************************************************/
-#include <stdlib.h>
 #include <stdio.h>
-#include <memory.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "gfx2snes.h"
 
 #include "imgtools.h"
-#include "lodepng.h"
 #include "loadimg.h"
+#include <malloc.h>
+#include <string.h>
 
 int	border=1;						// options and their defaults
 int	packed=0;						//

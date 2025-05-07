@@ -3,7 +3,6 @@
 namespace Conversion
 {
 
-    void Bank::AddModule(const char *filename)
-    {
-    }
+	void Bank::AddModule(const char* filename)
+	{}
 };

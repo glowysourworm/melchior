@@ -6,20 +6,16 @@
 namespace base
 {
 
-    StreamException::~StreamException() throw()
-    {
-    }
+	StreamException::~StreamException() throw()
+	{}
 
-    StreamClosedException::~StreamClosedException() throw()
-    {
-    }
+	StreamClosedException::~StreamClosedException() throw()
+	{}
 
-    StreamReadException::~StreamReadException() throw()
-    {
-    }
+	StreamReadException::~StreamReadException() throw()
+	{}
 
-    StreamWriteException::~StreamWriteException() throw()
-    {
-    }
+	StreamWriteException::~StreamWriteException() throw()
+	{}
 
 } // base

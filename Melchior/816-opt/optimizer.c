@@ -13,7 +13,13 @@
  *
  */
 
+#include "helpers.h"
 #include "optimizer.h"
+#include "regex-polyfill.h"
+#include <malloc.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 /**
  * @brief Checks if OPT816_QUIET is set.

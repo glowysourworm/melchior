@@ -7,27 +7,24 @@
 namespace base
 {
 
-    class noncopyable
-    {
-    private:
-        noncopyable(const noncopyable &)
-        {
-        }
+	class noncopyable
+	{
+	private:
+		noncopyable(const noncopyable&)
+		{}
 
-        noncopyable &operator=(const noncopyable &)
-        {
-            return *this;
-        }
+		noncopyable& operator=(const noncopyable&)
+		{
+			return *this;
+		}
 
-    protected:
-        noncopyable()
-        {
-        }
+	protected:
+		noncopyable()
+		{}
 
-        ~noncopyable()
-        {
-        }
-    };
+		~noncopyable()
+		{}
+	};
 
 } // base
 

@@ -27,11 +27,12 @@
 	
 ***************************************************************************/
 #include <stdbool.h>
-#include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
 
 #include "tiles.h"
+#include "common.h"
+#include <malloc.h>
 
 //-------------------------------------------------------------------------------------------------
 // imgbuf = image buffer

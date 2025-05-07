@@ -30,15 +30,14 @@
 
 */
 
-#include <iterator>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <string>
 #include <vector>
 
-#define CONSTIFYVERSION __BUILD_VERSION
-#define CONSTIFYDATE __BUILD_DATE
+#define CONSTIFYVERSION "Developer"
+#define CONSTIFYDATE __DATE__
 
 int quietmode = 0; // 0 = not quiet, 1 = i can't say anything :P
 

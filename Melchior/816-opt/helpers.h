@@ -1,14 +1,10 @@
 #ifndef HELPERS_H
 #define HELPERS_H
 
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #ifdef PCRE2_STATIC
 #include <pcre2posix.h>
 #else
-#include <regex.h>
+// Regex reference not used
 #endif
 
 /*!
@@ -37,13 +33,11 @@ int matchStr(const char *str1, const char *str2);
 int startWith(const char *source, const char *prefix);
 int endWith(const char *source, const char *prefix);
 int isInText(const char *source, const char *pattern);
-int min(const int a, const int b);
-int max(const int a, const int b);
 char *trimWhiteSpace(char *str);
 char *sliceStr(char *str, int slice_from, int slice_to);
 char *replaceStr(char *str, char *orig, char *rep);
 char *splitStr(char *str, char *sep, size_t pos);
-dynArray regexMatchGroups(char *source, char *regex, const size_t maxGroups);
+dynArray regexMatchGroups(char* source, char* regex, const size_t maxGroups);
 dynArray pushToArray(dynArray text_opt, char *str);
 
 #endif

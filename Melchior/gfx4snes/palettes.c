@@ -31,6 +31,9 @@
 #include <stdio.h>
 
 #include "palettes.h"
+#include "common.h"
+#include "images.h"
+#include <malloc.h>
 
 //-------------------------------------------------------------------------------------------------
 // palette = R,G,B color palette to convert

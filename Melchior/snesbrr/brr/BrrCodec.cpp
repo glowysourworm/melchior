@@ -1,9 +1,12 @@
 /* The contents of this file are subject to the terms of the
    Common Development and Distribution License, Version 1.0 only. */
 
+#include "../base/Stream.h"
+#include "../base/basemath.h"
+#include "../base/basetypes.h"
 #include "BrrCodec.h"
-#include "base/basemath.h"
-#include <string.h>
+#include <cstring>
+#include <vector>
 
 using namespace base::math;
 

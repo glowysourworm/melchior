@@ -6,18 +6,16 @@
 namespace base
 {
 
-    Stream::~Stream()
-    {
-    }
+	Stream::~Stream()
+	{}
 
-    void Stream::close()
-    {
-        pos = 0;
-        len = 0;
-    }
+	void Stream::close()
+	{
+		pos = 0;
+		len = 0;
+	}
 
-    void Stream::flush()
-    {
-    }
+	void Stream::flush()
+	{}
 
 } // base

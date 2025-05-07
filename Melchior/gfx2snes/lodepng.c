@@ -36,7 +36,6 @@ Rename this file to lodepng.cpp to use it for C++, or to lodepng.c to use it for
 #endif /* LODEPNG_COMPILE_DISK */
 
 #ifdef LODEPNG_COMPILE_ALLOCATORS
-#include <stdlib.h> /* allocations */
 #endif /* LODEPNG_COMPILE_ALLOCATORS */
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1310) /*Visual Studio: A few warning types are not desired here.*/

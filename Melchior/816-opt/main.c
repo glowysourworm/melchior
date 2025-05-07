@@ -15,6 +15,8 @@
 
 #include "helpers.h"
 #include "optimizer.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 /**
  * @brief The main function. Accept an ASM file

@@ -1,34 +1,29 @@
 #ifndef CONVERSION_H
 #define CONVERSION_H
 
-#include "inputdata.h"
 
 namespace Conversion
 {
 
-    class Pattern
-    {
-    };
+	class Pattern
+	{};
 
-    class Sample
-    {
-    };
+	class Sample
+	{};
 
-    class Instrument
-    {
-    };
+	class Instrument
+	{};
 
-    class Module
-    {
-    };
+	class Module
+	{};
 
-    // converted data handler
-    class Bank
-    {
+	// converted data handler
+	class Bank
+	{
 
-    public:
-        void AddModule(const char *filename);
-    };
+	public:
+		void AddModule(const char* filename);
+	};
 };
 
 #endif

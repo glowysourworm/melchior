@@ -29,6 +29,7 @@
 #include <stdarg.h>
 
 #include "errors.h"
+#include <vadefs.h>
 
 #define ERRORRED(STRING) "\x1B[31m" STRING "\033[0m"
 #define ERRORPINK(STRING) "\x1B[35m" STRING "\033[0m"
