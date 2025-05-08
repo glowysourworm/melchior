@@ -13,125 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\lib">
+      <UniqueIdentifier>{1b2d3b1d-59e4-422d-8ca2-51d4c01e0691}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include">
+      <UniqueIdentifier>{f933811d-bea1-410d-a05a-4648d173a136}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="arm64-asm.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="arm64-gen.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="arm64-link.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="arm-asm.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="arm-gen.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="arm-link.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="c67-gen.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="c67-link.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="conftest.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="i386-asm.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="i386-gen.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="i386-link.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="il-gen.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="libtcc.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="riscv64-asm.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="riscv64-gen.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="riscv64-link.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tcc.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tccasm.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tcccoff.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tccdbg.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tccelf.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tccgen.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tccmacho.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tccpe.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tccpp.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tccrun.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tcctools.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="x86_64-gen.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="x86_64-link.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="arm-tok.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="coff.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dwarf.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="elf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="i386-asm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="i386-tok.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="il-opcodes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="libtcc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="riscv64-tok.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="stab.h">
@@ -140,14 +33,58 @@
     <ClInclude Include="tcc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tcclib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="tcctok.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="x86_64-asm.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\float.h">
+      <Filter>Header Files\include</Filter>
     </ClInclude>
+    <ClInclude Include="include\stdarg.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stdbool.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stddef.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tcclib.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\varargs.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="816-gen.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libtcc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tcc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tccasm.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tccelf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tccgen.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tccpp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tccrun.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\bcheck.c">
+      <Filter>Source Files\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\libtcc1.c">
+      <Filter>Source Files\lib</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

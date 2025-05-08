@@ -33,3 +33,10 @@ https://www.villehelin.com/wla.html
 (and for the source)
 
 https://github.com/vhelin/wla-dx.git
+
+# Update [5/8/2025] TinyCC having trouble compiling
+Going to substitute the alekmaul version of tcc - which I believe to have been ported 
+from the above Tiny C compiler. Hopefully, this project will be more up to date in 
+terms of the include tree.
+
+https://github.com/alekmaul/tcc.git

@@ -42,7 +42,6 @@
  mingodad                   YES
  Pip Cet                    YES
  Shinichiro Hamaji          YES                 x86_64-gen.c
- Steffen Nurpmeso           YES
  Vincent Lefèvre            YES
  Thomas Preud'homme         YES                 arm-gen.c
  Timo VJ Lähde (Timppa)     ?                   tiny_libmaker.c
@@ -51,8 +50,6 @@
  Urs Janssen                YES
  waddlesplash               YES
  Christian Jullien          YES                 Windows Cygwin build and tests
- Reimar Döffinger           YES
- noneofyourbusiness         YES
 
 
  ------------------------------------------------------------------------------

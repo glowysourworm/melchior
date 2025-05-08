@@ -18,6 +18,31 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="elf.h" />
+    <ClInclude Include="include\float.h" />
+    <ClInclude Include="include\stdarg.h" />
+    <ClInclude Include="include\stdbool.h" />
+    <ClInclude Include="include\stddef.h" />
+    <ClInclude Include="include\tcclib.h" />
+    <ClInclude Include="include\varargs.h" />
+    <ClInclude Include="libtcc.h" />
+    <ClInclude Include="stab.h" />
+    <ClInclude Include="tcc.h" />
+    <ClInclude Include="tcctok.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="816-gen.c" />
+    <ClCompile Include="libtcc.c" />
+    <ClCompile Include="lib\bcheck.c" />
+    <ClCompile Include="lib\libtcc1.c" />
+    <ClCompile Include="tcc.c" />
+    <ClCompile Include="tccasm.c" />
+    <ClCompile Include="tccelf.c" />
+    <ClCompile Include="tccgen.c" />
+    <ClCompile Include="tccpp.c" />
+    <ClCompile Include="tccrun.c" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -128,54 +153,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="arm-asm.c" />
-    <ClCompile Include="arm-gen.c" />
-    <ClCompile Include="arm-link.c" />
-    <ClCompile Include="arm64-asm.c" />
-    <ClCompile Include="arm64-gen.c" />
-    <ClCompile Include="arm64-link.c" />
-    <ClCompile Include="c67-gen.c" />
-    <ClCompile Include="c67-link.c" />
-    <ClCompile Include="conftest.c" />
-    <ClCompile Include="i386-asm.c" />
-    <ClCompile Include="i386-gen.c" />
-    <ClCompile Include="i386-link.c" />
-    <ClCompile Include="il-gen.c" />
-    <ClCompile Include="libtcc.c" />
-    <ClCompile Include="riscv64-asm.c" />
-    <ClCompile Include="riscv64-gen.c" />
-    <ClCompile Include="riscv64-link.c" />
-    <ClCompile Include="tcc.c" />
-    <ClCompile Include="tccasm.c" />
-    <ClCompile Include="tcccoff.c" />
-    <ClCompile Include="tccdbg.c" />
-    <ClCompile Include="tccelf.c" />
-    <ClCompile Include="tccgen.c" />
-    <ClCompile Include="tccmacho.c" />
-    <ClCompile Include="tccpe.c" />
-    <ClCompile Include="tccpp.c" />
-    <ClCompile Include="tccrun.c" />
-    <ClCompile Include="tcctools.c" />
-    <ClCompile Include="x86_64-gen.c" />
-    <ClCompile Include="x86_64-link.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="arm-tok.h" />
-    <ClInclude Include="coff.h" />
-    <ClInclude Include="dwarf.h" />
-    <ClInclude Include="elf.h" />
-    <ClInclude Include="i386-asm.h" />
-    <ClInclude Include="i386-tok.h" />
-    <ClInclude Include="il-opcodes.h" />
-    <ClInclude Include="libtcc.h" />
-    <ClInclude Include="riscv64-tok.h" />
-    <ClInclude Include="stab.h" />
-    <ClInclude Include="tcc.h" />
-    <ClInclude Include="tcclib.h" />
-    <ClInclude Include="tcctok.h" />
-    <ClInclude Include="x86_64-asm.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
