@@ -1,0 +1,35 @@
+Resources
+---------
+
+# Tiny C Compiler
+The 816-tcc.exe compiler has been brought into the project from the group site headed
+by Fabrice Bellard. This is an older project; and I'm looking for whoever has taken over
+development / bug fixes. alekmaul (https://github.com/alekmaul) has a repository for
+tcc; but it doesn't appear to be under active development. So, I've taken Fabrice's 
+older project - which was well documented.
+
+# Tiny C Compiler (Fabrice Bellard)
+https://savannah.nongnu.org/
+
+# Tiny C Compiler - Bug Tracker (Fabrice Bellard)
+https://savannah.nongnu.org/bugs/?group=tinycc
+
+# Fabrice Bellard's Home Page
+https://www.bellard.org/tcc/
+
+Some more useful links; but mostly unrelated to SNES dev.
+
+# WLA-DX Cross Assembler Compiler
+The search for wla-65816.exe source brought up mention of several references to "yet
+another ... compiler". Ville Helin has a website (https://wla-dx.readthedocs.io) 
+explaining the evolution of his ... projects ;) I think he probably has the proper
+source maintained; and that it's very likely that these other github repos have 
+basically just stored the compiler executable(s). PVSnesLib has a toolchain that
+uses TCC-816, WLA-65816, ... with termial commands. So, lets begin here at
+Ville Helin's homepage:
+
+https://www.villehelin.com/wla.html
+
+(and for the source)
+
+https://github.com/vhelin/wla-dx.git
