@@ -1,12 +1,51 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:Melchior.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:Melchior.Views"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+		xmlns:AvaloniaEditTheme="clr-namespace:TextMateSharp.Grammars;assembly=TextMateSharp.Grammars"
+		xmlns:AvaloniaStyling="clr-namespace:Avalonia.Styling;assembly=Avalonia.Base"
         x:Class="Melchior.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="Melchior">
-        <views:MainView />
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		<Menu>
+			<MenuItem Header="_File" />
+			<MenuItem Header="_Edit" />
+			<MenuItem Header="_View" />
+			<MenuItem Header="_Theme">
+				<MenuItem Header="_Main">
+					<MenuItem Header="_Light (Default)" Click="ThemeMain_Click" Tag="{x:Static AvaloniaStyling:ThemeVariant.Default}" />
+					<Separator />
+					<MenuItem Header="_Light (Default)" Click="ThemeMain_Click" Tag="{x:Static AvaloniaStyling:ThemeVariant.Light}" />
+					<MenuItem Header="_Dark" Click="ThemeMain_Click" Tag="{x:Static AvaloniaStyling:ThemeVariant.Dark}" />
+				</MenuItem>
+				<MenuItem Header="_Editor">
+					<MenuItem Header="Light" Tag="{x:Static AvaloniaEditTheme:ThemeName.Light}" Click="ThemeEditor_Click" />
+					<MenuItem Header="Light Plus" Tag="{x:Static AvaloniaEditTheme:ThemeName.LightPlus}" Click="ThemeEditor_Click" />
+					<MenuItem Header="Light High Contrast" Tag="{x:Static AvaloniaEditTheme:ThemeName.HighContrastLight}" Click="ThemeEditor_Click" />
+					<MenuItem Header="Light Solarized" Tag="{x:Static AvaloniaEditTheme:ThemeName.SolarizedLight}" Click="ThemeEditor_Click" />
+					
+					<MenuItem Header="Dark" Tag="{x:Static AvaloniaEditTheme:ThemeName.Dark}" Click="ThemeEditor_Click" />
+					<MenuItem Header="Dark Plus" Tag="{x:Static AvaloniaEditTheme:ThemeName.DarkPlus}" Click="ThemeEditor_Click" />
+					<MenuItem Header="Dark High Contrast" Tag="{x:Static AvaloniaEditTheme:ThemeName.HighContrastDark}" Click="ThemeEditor_Click" />
+					<MenuItem Header="Dark Solarized" Tag="{x:Static AvaloniaEditTheme:ThemeName.SolarizedDark}" Click="ThemeEditor_Click" />
+					
+					<MenuItem Header="Monokai" Tag="{x:Static AvaloniaEditTheme:ThemeName.Monokai}" Click="ThemeEditor_Click" />
+					<MenuItem Header="Monokai Dimmed" Tag="{x:Static AvaloniaEditTheme:ThemeName.DimmedMonokai}" Click="ThemeEditor_Click" />
+					
+					<MenuItem Header="Abbys" Tag="{x:Static AvaloniaEditTheme:ThemeName.Abbys}" Click="ThemeEditor_Click" />
+					<MenuItem Header="Kimbie Dark" Tag="{x:Static AvaloniaEditTheme:ThemeName.KimbieDark}" Click="ThemeEditor_Click" />
+					<MenuItem Header="Quiet Light" Tag="{x:Static AvaloniaEditTheme:ThemeName.QuietLight}" Click="ThemeEditor_Click" />
+					<MenuItem Header="Red" Tag="{x:Static AvaloniaEditTheme:ThemeName.Red}" Click="ThemeEditor_Click" />					
+					<MenuItem Header="Tomorrow Night Blue" Tag="{x:Static AvaloniaEditTheme:ThemeName.TomorrowNightBlue}" Click="ThemeEditor_Click" />
+				</MenuItem>
+			</MenuItem>
+		</Menu>
+
+		<views:MainView x:Name="TheMainView" Grid.Row="1" />
+	</Grid>
 </Window>

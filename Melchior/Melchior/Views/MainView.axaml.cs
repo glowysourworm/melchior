@@ -1,4 +1,9 @@
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
+
+using AvaloniaEdit;
+using AvaloniaEdit.TextMate;
+
+using TextMateSharp.Grammars;
 
 namespace Melchior.Views;
 
