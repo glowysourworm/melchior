@@ -405,12 +405,12 @@ typedef struct
 
 #define ELF32_ST_BIND(val) (((unsigned char) (val)) >> 4)
 #define ELF32_ST_TYPE(val) ((val) &0xf)
-#define ELF32_ST_INFO(bind, type) (((bind) << 4) + ((type) &0xf))
+#define ELF32_ST_INFO(varbind, type) (((varbind) << 4) + ((type) &0xf))
 
 /* Both Elf32_Sym and Elf64_Sym use the same one-byte st_info field.  */
 #define ELF64_ST_BIND(val) ELF32_ST_BIND(val)
 #define ELF64_ST_TYPE(val) ELF32_ST_TYPE(val)
-#define ELF64_ST_INFO(bind, type) ELF32_ST_INFO((bind), (type))
+#define ELF64_ST_INFO(varbind, type) ELF32_ST_INFO((varbind), (type))
 
 /* Legal values for ST_BIND subfield of st_info (symbol binding).  */
 
@@ -452,7 +452,7 @@ typedef struct
 /* Symbol visibility specification encoded in the st_other field.  */
 #define STV_DEFAULT 0   /* Default symbol visibility rules */
 #define STV_INTERNAL 1  /* Processor specific hidden class */
-#define STV_HIDDEN 2    /* Sym unavailable in other modules */
+#define STV_HIDDEN 2    /* TokenSym unavailable in other modules */
 #define STV_PROTECTED 3 /* Not preemptible, not exported */
 
 /* Relocation table entry without addend (in section of type SHT_REL).  */

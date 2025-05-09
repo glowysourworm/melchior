@@ -35,7 +35,7 @@ static void asm_expr(TCCState *s1, ExprValue *pe);
 
 static void asm_expr_unary(TCCState *s1, ExprValue *pe)
 {
-    Sym *sym;
+    TokenSym *sym;
     int op, n, label;
     const char *p;
 
@@ -255,7 +255,7 @@ static int asm_int_expr(TCCState *s1)
    much memory when storing labels in TokenStrings */
 static void asm_new_label1(TCCState *s1, int label, int is_local, int sh_num, int value)
 {
-    Sym *sym;
+    TokenSym *sym;
 
     sym = label_find(label);
     if (sym) {
@@ -284,7 +284,7 @@ static void asm_new_label(TCCState *s1, int label, int is_local)
 
 static void asm_free_labels(TCCState *st)
 {
-    Sym *s, *s1;
+    TokenSym *s, *s1;
     Section *sec;
 
     for (s = st->asm_labels; s != NULL; s = s1) {
@@ -472,7 +472,7 @@ static void asm_parse_directive(TCCState *s1)
     } break;
     case TOK_ASM_globl:
     case TOK_ASM_global: {
-        Sym *sym;
+        TokenSym *sym;
 
         next();
         sym = label_find(tok);
@@ -679,7 +679,7 @@ static int tcc_assemble_internal(TCCState *s1, int do_preprocess)
 /* Assemble the current file */
 static int tcc_assemble(TCCState *s1, int do_preprocess)
 {
-    Sym *define_start;
+    TokenSym *define_start;
     int ret;
 
     preprocess_init(s1);

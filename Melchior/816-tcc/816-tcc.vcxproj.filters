@@ -19,6 +19,12 @@
     <Filter Include="Header Files\include">
       <UniqueIdentifier>{f933811d-bea1-410d-a05a-4648d173a136}</UniqueIdentifier>
     </Filter>
+    <Filter Include="tinycc">
+      <UniqueIdentifier>{be2c4cc8-6f6f-42c7-8ee9-442d889bc3b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\encapsulation">
+      <UniqueIdentifier>{cda11614-cb87-40f6-9f40-adf68a7a793b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="elf.h">
@@ -36,23 +42,17 @@
     <ClInclude Include="tcctok.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\float.h">
-      <Filter>Header Files\include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\stdarg.h">
-      <Filter>Header Files\include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\stdbool.h">
-      <Filter>Header Files\include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\stddef.h">
-      <Filter>Header Files\include</Filter>
-    </ClInclude>
     <ClInclude Include="include\tcclib.h">
       <Filter>Header Files\include</Filter>
     </ClInclude>
-    <ClInclude Include="include\varargs.h">
-      <Filter>Header Files\include</Filter>
+    <ClInclude Include="tinycc\i386-tok.h">
+      <Filter>tinycc</Filter>
+    </ClInclude>
+    <ClInclude Include="tinycc\i386-asm.h">
+      <Filter>tinycc</Filter>
+    </ClInclude>
+    <ClInclude Include="816-gen.h">
+      <Filter>Header Files\encapsulation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

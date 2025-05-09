@@ -19,124 +19,16 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+#pragma once
 
-#define LDOUBLE_SIZE 12 // not actually supported
-#define LDOUBLE_ALIGN 4
-#define MAX_ALIGN 8
+#include <stddef.h>
+#include <vadefs.h>
+#include "tcc.h"
+#include "elf.h"
 
-#define NB_REGS 15
-
-#define RC_INT 0x0001
-#define RC_FLOAT 0x0002
-#define RC_R0 0x0004
-#define RC_R1 0x0008
-#define RC_R2 0x0010
-#define RC_R3 0x0020
-#define RC_R4 0x0040
-#define RC_R5 0x0080
-#define RC_R9 0x0100
-#define RC_R10 0x0200
-#define RC_F0 0x0400
-#define RC_F1 0x0800
-#define RC_F2 0x1000
-#define RC_F3 0x2000
-#define RC_NONE 0x8000
-
-#define RC_IRET RC_R0
-#define RC_LRET RC_R1
-#define RC_FRET RC_F0
-
-enum {
-    TREG_R0 = 0,
-    TREG_R1,
-    TREG_R2,
-    TREG_R3,
-    TREG_R4,
-    TREG_R5,
-    TREG_R9 = 9,
-    TREG_R10,
-    TREG_F0,
-    TREG_F1,
-    TREG_F2,
-    TREG_F3,
-};
-
-int reg_classes[NB_REGS] = {
-    RC_INT | RC_R0,
-    RC_INT | RC_R1,
-    RC_INT | RC_R2,
-    RC_INT | RC_R3,
-    RC_INT | RC_R4,
-    RC_INT | RC_R5,
-    RC_NONE,
-    RC_NONE,
-    RC_NONE,
-    RC_R9,
-    RC_R10,
-    RC_FLOAT | RC_F0,
-    RC_FLOAT | RC_F1,
-    RC_FLOAT | RC_F2,
-    RC_FLOAT | RC_F3,
-};
-
-#define REG_IRET TREG_R0
-#define REG_LRET TREG_R1
-#define REG_FRET TREG_F0
-
-#define R_DATA_32 1  // whatever
-#define R_DATA_PTR 1 // whatever
-#define R_JMP_SLOT 2 // whatever
-#define R_COPY 3     // whatever
-
-#define ELF_PAGE_SIZE 0x1000 // whatever
-#define ELF_START_ADDR 0x400 // made up
-
-#define PTR_SIZE 4
-
-#define EM_TCC_TARGET EM_W65
-
-#define LOCAL_LABEL "__local_%d"
-
-#define MAXLEN 512
-
-#define MAX_LABELS 1000
-
-char unique_token[] = "{WLA_FILENAME}";
-
-/**
- * @note WLA does not have file-local symbols, only section-local and global.
- * Thus, everything that is file-local must be made global and given a
- * unique name. Not knowing how to choose one deterministically, we use a
- * random string, saved to STATIC_PREFIX.
- * With WLA 9.X, if you have a label that begins with a _ and it is inside a section,
- * then the name doesn't show outside of that section.
- * If it is not inside a section it doesn't show outside of the object file...
- */
-
-#define STATIC_PREFIX "tccs_"
-char current_fn[MAXLEN] = "";
-
-// Variable relocate a given section
-char **relocptrs = NULL;
-
-char *label_workaround = NULL;
-
-/**
- * @struct labels_816
- *
- * @brief Structure representing labels in the code.
- *
- * This structure represents a label in the code with a name and a position.
- */
-struct labels_816
-{
-    char *name; /**< @brief The name of the label. */
-    int pos;    /**< @brief The position of the label in the code. */
-};
-
-struct labels_816 label[MAX_LABELS]; /**< @brief Array to store multiple label structures. */
-
-int labels = 0;
+#include "816-gen.h"
+#include <stdarg.h>
+#include <stdio.h>
 
 /**
  * @brief Constructs and returns a symbol string from a given symbol.
@@ -149,7 +41,7 @@ int labels = 0;
  * @param sym Pointer to the symbol structure representing the symbol.
  * @return Pointer to the constructed symbol string. This string is statically allocated and should not be freed.
  */
-char *get_sym_str(Sym *sym)
+char *get_sym_str(TokenSym *sym)
 {
     static char name[MAXLEN];
     char *symname = get_tok_str(sym->v, NULL);
@@ -862,7 +754,7 @@ void store(int r, SValue *sv)
 void gfunc_call(int nb_args)
 {
     int align, r, i, func_call;
-    Sym *func_sym;
+    TokenSym *func_sym;
 
     int length;
 
@@ -1861,7 +1753,7 @@ int section_count = 0;
  */
 void gfunc_prolog(CType *func_type)
 {
-    Sym *sym;
+    TokenSym *sym;
     int n, addr, size, align;
 
     sym = func_type->ref;
@@ -1877,7 +1769,7 @@ void gfunc_prolog(CType *func_type)
     }
 
     /* super-dirty hack to get the function name */
-    strcpy(current_fn, get_sym_str((Sym *) (((void *) func_type) - offsetof(Sym, type))));
+    strcpy(current_fn, get_sym_str((TokenSym *) (((void *) func_type) - offsetof(TokenSym, type))));
 
     /* wlalink does not cut up sections, so it is desirable to have a section
        for each function to keep the amount of unused memory in the ROM banks

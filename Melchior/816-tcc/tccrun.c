@@ -268,11 +268,11 @@ static unsigned long rt_printline(unsigned long wanted_pc)
     /* second pass: we try symtab symbols (no line number info) */
     incl_index = 0;
     {
-        ElfW(Sym) * sym, *sym_end;
+        ElfW(TokenSym) * sym, *sym_end;
         int type;
 
-        sym_end = (ElfW(Sym) *) (symtab_section->data + symtab_section->data_offset);
-        for (sym = (ElfW(Sym) *) symtab_section->data + 1; sym < sym_end; sym++) {
+        sym_end = (ElfW(TokenSym) *) (symtab_section->data + symtab_section->data_offset);
+        for (sym = (ElfW(TokenSym) *) symtab_section->data + 1; sym < sym_end; sym++) {
             type = ELFW(ST_TYPE)(sym->st_info);
             if (type == STT_FUNC) {
                 if (wanted_pc >= sym->st_value && wanted_pc < sym->st_value + sym->st_size) {

@@ -19,17 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="816-gen.h" />
     <ClInclude Include="elf.h" />
-    <ClInclude Include="include\float.h" />
-    <ClInclude Include="include\stdarg.h" />
-    <ClInclude Include="include\stdbool.h" />
-    <ClInclude Include="include\stddef.h" />
     <ClInclude Include="include\tcclib.h" />
-    <ClInclude Include="include\varargs.h" />
     <ClInclude Include="libtcc.h" />
     <ClInclude Include="stab.h" />
     <ClInclude Include="tcc.h" />
     <ClInclude Include="tcctok.h" />
+    <ClInclude Include="tinycc\i386-asm.h" />
+    <ClInclude Include="tinycc\i386-tok.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="816-gen.c" />
@@ -127,7 +125,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;TCC_TARGET_816;E2923;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>

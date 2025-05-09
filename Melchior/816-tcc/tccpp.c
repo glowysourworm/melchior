@@ -47,7 +47,7 @@ struct macro_level
 static void next_nomacro(void);
 static void next_nomacro_spc(void);
 static void macro_subst(TokenString *tok_str,
-                        Sym **nested_list,
+                        TokenSym **nested_list,
                         const int *macro_str,
                         struct macro_level **can_read_stream);
 
@@ -1129,9 +1129,9 @@ static void tok_str_add_tok(TokenString *s)
 #endif
 
 /* defines handling */
-static inline void define_push(int v, int macro_type, int *str, Sym *first_arg)
+static inline void define_push(int v, int macro_type, int *str, TokenSym *first_arg)
 {
-    Sym *s;
+    TokenSym *s;
 
     s = sym_push2(&define_stack, v, macro_type, 0);
     s->d = str;
@@ -1140,7 +1140,7 @@ static inline void define_push(int v, int macro_type, int *str, Sym *first_arg)
 }
 
 /* undefined a define symbol. Its name is just set to zero */
-static void define_undef(Sym *s)
+static void define_undef(TokenSym *s)
 {
     int v;
     v = s->v;
@@ -1149,7 +1149,7 @@ static void define_undef(Sym *s)
     s->v = 0;
 }
 
-static inline Sym *define_find(int v)
+static inline TokenSym *define_find(int v)
 {
     v -= TOK_IDENT;
     if ((unsigned) v >= (unsigned) (tok_ident - TOK_IDENT))
@@ -1158,9 +1158,9 @@ static inline Sym *define_find(int v)
 }
 
 /* free define stack until top reaches 'b' */
-static void free_defines(Sym *b)
+static void free_defines(TokenSym *b)
 {
-    Sym *top, *top1;
+    TokenSym *top, *top1;
     int v;
 
     top = define_stack;
@@ -1179,7 +1179,7 @@ static void free_defines(Sym *b)
 }
 
 /* label lookup */
-static Sym *label_find(int v)
+static TokenSym *label_find(int v)
 {
     v -= TOK_IDENT;
     if ((unsigned) v >= (unsigned) (tok_ident - TOK_IDENT))
@@ -1187,9 +1187,9 @@ static Sym *label_find(int v)
     return table_ident[v]->sym_label;
 }
 
-static Sym *label_push(Sym **ptop, int v, int flags)
+static TokenSym *label_push(TokenSym **ptop, int v, int flags)
 {
-    Sym *s, **ps;
+    TokenSym *s, **ps;
     s = sym_push2(ptop, v, 0, 0);
     s->r = flags;
     ps = &table_ident[v - TOK_IDENT]->sym_label;
@@ -1206,9 +1206,9 @@ static Sym *label_push(Sym **ptop, int v, int flags)
 
 /* pop labels until element last is reached. Look if any labels are
    undefined. Define symbols if '&&label' was used. */
-static void label_pop(Sym **ptop, Sym *slast)
+static void label_pop(TokenSym **ptop, TokenSym *slast)
 {
-    Sym *s, *s1;
+    TokenSym *s, *s1;
     for (s = *ptop; s != slast; s = s1) {
         s1 = s->prev;
         if (s->r == LABEL_DECLARED) {
@@ -1286,7 +1286,7 @@ static void tok_print(int *str)
 /* parse after #define */
 static void parse_define(void)
 {
-    Sym *s, *first, **ps;
+    TokenSym *s, *first, **ps;
     int v, t, varg, is_vaargs, spc;
     TokenString str;
 
@@ -1463,7 +1463,7 @@ static void preprocess(int is_bof)
     TCCState *s1 = tcc_state;
     int i, c, n, saved_parse_flags;
     char buf[1024], *q;
-    Sym *s;
+    TokenSym *s;
 
     saved_parse_flags = parse_flags;
     parse_flags = PARSE_FLAG_PREPROCESS | PARSE_FLAG_TOK_NUM | PARSE_FLAG_LINEFEED;
@@ -2687,10 +2687,10 @@ static void next_nomacro(void)
 }
 
 /* substitute args in macro_str and return allocated string */
-static int *macro_arg_subst(Sym **nested_list, int *macro_str, Sym *args)
+static int *macro_arg_subst(TokenSym **nested_list, int *macro_str, TokenSym *args)
 {
     int *st, last_tok, t, spc;
-    Sym *s;
+    TokenSym *s;
     CValue cval;
     TokenString str;
     CString cstr;
@@ -2784,11 +2784,11 @@ static char const ab_month_name[12][4]
    macros we got inside to avoid recursing. Return non zero if no
    substitution needs to be done */
 static int macro_subst_tok(TokenString *tok_str,
-                           Sym **nested_list,
-                           Sym *s,
+                           TokenSym **nested_list,
+                           TokenSym *s,
                            struct macro_level **can_read_stream)
 {
-    Sym *args, *sa, *sa1;
+    TokenSym *args, *sa, *sa1;
     int mstr_allocated, parlevel, *mstr, t, t1, *p, spc;
     TokenString str;
     char *cstrval;
@@ -3021,11 +3021,11 @@ static inline int *macro_twosharps(const int *macro_str)
    (tok_str,tok_len). 'nested_list' is the list of all macros we got
    inside to avoid recursing. */
 static void macro_subst(TokenString *tok_str,
-                        Sym **nested_list,
+                        TokenSym **nested_list,
                         const int *macro_str,
                         struct macro_level **can_read_stream)
 {
-    Sym *s;
+    TokenSym *s;
     int *macro_str1;
     const int *ptr;
     int t, ret, spc;
@@ -3076,7 +3076,7 @@ static void macro_subst(TokenString *tok_str,
 /* return next token with macro substitution */
 static void next(void)
 {
-    Sym *nested_list, *s;
+    TokenSym *nested_list, *s;
     TokenString str;
     struct macro_level *ml;
 
@@ -3195,7 +3195,7 @@ void preprocess_new()
 /* Preprocess the current file */
 static int tcc_preprocess(TCCState *s1)
 {
-    Sym *define_start;
+    TokenSym *define_start;
     BufferedFile *file_ref, **iptr, **iptr_new;
     int token_seen, line_ref, d;
     const char *s;

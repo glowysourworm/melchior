@@ -23,6 +23,9 @@
 #else
 #include "libtcc.c"
 #endif
+#include "elf.h"
+#include "libtcc.h"
+#include <string.h>
 
 /**
  * @brief Display help information.

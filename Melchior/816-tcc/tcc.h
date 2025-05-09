@@ -18,8 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#define _GNU_SOURCE
-#include "config.h"
+#pragma once
 
 #ifdef CONFIG_TCCBOOT
 
@@ -30,21 +29,13 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdarg.h>
 #include <string.h>
-#include <errno.h>
-#include <math.h>
-#include <signal.h>
 #include <fcntl.h>
 #include <setjmp.h>
-#include <time.h>
 
 #ifdef _WIN32
 #include <windows.h>
 #undef RC_NONE
-#include <sys/timeb.h>
-#include <io.h>     /* open, close etc. */
-#include <direct.h> /* getcwd */
 #define inline __inline
 #define inp next_inp
 #ifdef _WIN64
@@ -70,13 +61,14 @@
 #endif
 
 #include "elf.h"
-#include "stab.h"
 
 #ifndef O_BINARY
 #define O_BINARY 0
 #endif
 
 #include "libtcc.h"
+#include <stddef.h>
+#include "tcctok.h"
 
 /* parser debug */
 //#define PARSE_DEBUG
@@ -149,10 +141,10 @@ typedef int BOOL;
 typedef struct TokenSym
 {
     struct TokenSym *hash_next;
-    struct Sym *sym_define;     /* direct pointer to define */
-    struct Sym *sym_label;      /* direct pointer to label */
-    struct Sym *sym_struct;     /* direct pointer to structure */
-    struct Sym *sym_identifier; /* direct pointer to identifier */
+    struct TokenSym *sym_define;     /* direct pointer to define */
+    struct TokenSym *sym_label;      /* direct pointer to label */
+    struct TokenSym *sym_struct;     /* direct pointer to structure */
+    struct TokenSym *sym_identifier; /* direct pointer to identifier */
     int tok;                    /* token number */
     int len;
     char str[1];
@@ -176,7 +168,7 @@ typedef struct CString
 typedef struct CType
 {
     int t;
-    struct Sym *ref;
+    struct TokenSym *ref;
 #ifdef TCC_TARGET_816
     int extra;
 #endif
@@ -205,11 +197,11 @@ typedef struct SValue
     unsigned short r2; /* second register, used for 'long long'
                           type. If not used, set to VT_CONST */
     CValue c;          /* constant, if VT_CONST */
-    struct Sym *sym;   /* symbol, if (VT_SYM | VT_CONST) */
+    struct TokenSym *sym;   /* symbol, if (VT_SYM | VT_CONST) */
 } SValue;
 
-/* symbol management */
-typedef struct Sym
+/* symbol management [glowysourworm] (RENAMED FROM Sym -> TokenSym NAMESPACE CONFLICT) */
+typedef struct TokenSym
 {
     int v;  /* symbol token */
     long r; /* associated register */
@@ -219,12 +211,12 @@ typedef struct Sym
     };
     CType type; /* associated type */
     union {
-        struct Sym *next; /* next related symbol */
+        struct TokenSym *next; /* next related symbol */
         long jnext;       /* next jump label */
     };
-    struct Sym *prev;     /* prev symbol in stack */
-    struct Sym *prev_tok; /* previous symbol for this token */
-} Sym;
+    struct TokenSym *prev;     /* prev symbol in stack */
+    struct TokenSym *prev_tok; /* previous symbol for this token */
+} TokenSym;
 
 /* section definition */
 /* XXX: use directly ELF structure for parameters ? */
@@ -293,12 +285,12 @@ typedef struct AttributeDef
 #define SYM_FIELD 0x20000000      /* struct/union field symbol space */
 #define SYM_FIRST_ANOM 0x10000000 /* first anonymous sym */
 
-/* stored in 'Sym.c' field */
+/* stored in 'TokenSym.c' field */
 #define FUNC_NEW 1      /* ansi function prototype */
 #define FUNC_OLD 2      /* old function prototype */
 #define FUNC_ELLIPSIS 3 /* ansi function prototype with ... */
 
-/* stored in 'Sym.r' field */
+/* stored in 'TokenSym.r' field */
 #define FUNC_CDECL 0     /* standard c call */
 #define FUNC_STDCALL 1   /* pascal c call */
 #define FUNC_FASTCALL1 2 /* first param in %eax */
@@ -306,11 +298,11 @@ typedef struct AttributeDef
 #define FUNC_FASTCALL3 4 /* first parameter in %eax, %edx, %ecx */
 #define FUNC_FASTCALLW 5 /* first parameter in %ecx, %edx */
 
-/* field 'Sym.t' for macros */
+/* field 'TokenSym.t' for macros */
 #define MACRO_OBJ 0  /* object like macro */
 #define MACRO_FUNC 1 /* function like macro */
 
-/* field 'Sym.r' for C labels */
+/* field 'TokenSym.r' for C labels */
 #define LABEL_DEFINED 0  /* label is defined */
 #define LABEL_FORWARD 1  /* label is forward defined */
 #define LABEL_DECLARED 2 /* label is declared but never used */
@@ -362,7 +354,7 @@ typedef struct TokenString
 typedef struct InlineFunc
 {
     int *token_str;
-    Sym *sym;
+    TokenSym *sym;
     char filename[1];
 } InlineFunc;
 
@@ -382,7 +374,7 @@ typedef struct CachedInclude
 typedef struct ExprValue
 {
     uint32_t v;
-    Sym *sym;
+    TokenSym *sym;
 } ExprValue;
 
 #define MAX_ASM_OPERANDS 30
@@ -508,7 +500,7 @@ struct TCCState
     int nb_errors;
 
     /* tiny assembler state */
-    Sym *asm_labels;
+    TokenSym *asm_labels;
 
     /* see include_stack_ptr */
     BufferedFile *include_stack[INCLUDE_STACK_SIZE];

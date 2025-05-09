@@ -97,12 +97,12 @@ static TokenSym **table_ident;
 static TokenSym *hash_ident[TOK_HASH_SIZE];
 static char token_buf[STRING_MAX_SIZE + 1];
 static char *funcname;
-static Sym *global_stack, *local_stack;
-static Sym *define_stack;
-static Sym *global_label_stack, *local_label_stack;
+static TokenSym *global_stack, *local_stack;
+static TokenSym *define_stack;
+static TokenSym *global_label_stack, *local_label_stack;
 /* symbol allocator */
-#define SYM_POOL_NB (8192 / sizeof(Sym))
-static Sym *sym_free_first;
+#define SYM_POOL_NB (8192 / sizeof(TokenSym))
+static TokenSym *sym_free_first;
 static void **sym_pools;
 static int nb_sym_pools;
 
@@ -165,8 +165,8 @@ void gen_op(int op);
 void force_charshort_cast(int t);
 static void gen_cast(CType *type);
 void vstore(void);
-static Sym *sym_find(int v);
-static Sym *sym_push(int v, CType *type, int r, int c);
+static TokenSym *sym_find(int v);
+static TokenSym *sym_push(int v, CType *type, int r, int c);
 
 /* type handling */
 static int type_size(CType *type, int *a);
@@ -188,14 +188,14 @@ void lexpand_nr(void);
 static void vpush_global_sym(CType *type, int v);
 void vset(CType *type, int r, int v);
 void type_to_str(char *buf, int buf_size, CType *type, const char *varstr);
-static Sym *get_sym_ref(CType *type, Section *sec, unsigned long offset, unsigned long size);
-static Sym *external_global_sym(int v, CType *type, int r);
+static TokenSym *get_sym_ref(CType *type, Section *sec, unsigned long offset, unsigned long size);
+static TokenSym *external_global_sym(int v, CType *type, int r);
 
 /* section generation */
 static void section_realloc(Section *sec, unsigned long new_size);
 static void *section_ptr_add(Section *sec, unsigned long size);
-static void put_extern_sym(Sym *sym, Section *section, unsigned long value, unsigned long size);
-static void greloc(Section *s, Sym *sym, unsigned long addr, int type);
+static void put_extern_sym(TokenSym *sym, Section *section, unsigned long value, unsigned long size);
+static void greloc(Section *s, TokenSym *sym, unsigned long addr, int type);
 static int put_elf_str(Section *s, const char *sym);
 static int put_elf_sym(Section *s,
                        unsigned long value,
@@ -247,18 +247,18 @@ static void asm_global_instr(void);
 /********************************************************/
 /* libtcc.c */
 
-static Sym *__sym_malloc(void);
-static inline Sym *sym_malloc(void);
-static inline void sym_free(Sym *sym);
+static TokenSym *__sym_malloc(void);
+static inline TokenSym *sym_malloc(void);
+static inline void sym_free(TokenSym *sym);
 Section *new_section(TCCState *s1, const char *name, int sh_type, int sh_flags);
 static void free_section(Section *s);
 static void section_realloc(Section *sec, unsigned long new_size);
 static void *section_ptr_add(Section *sec, unsigned long size);
 Section *find_section(TCCState *s1, const char *name);
 static void put_extern_sym2(
-    Sym *sym, Section *section, unsigned long value, unsigned long size, int can_add_underscore);
-static void put_extern_sym(Sym *sym, Section *section, unsigned long value, unsigned long size);
-static void greloc(Section *s, Sym *sym, unsigned long offset, int type);
+    TokenSym *sym, Section *section, unsigned long value, unsigned long size, int can_add_underscore);
+static void put_extern_sym(TokenSym *sym, Section *section, unsigned long value, unsigned long size);
+static void greloc(Section *s, TokenSym *sym, unsigned long offset, int type);
 
 static void strcat_vprintf(char *buf, int buf_size, const char *fmt, va_list ap);
 static void strcat_printf(char *buf, int buf_size, const char *fmt, ...);
@@ -273,13 +273,13 @@ static void cstr_free(CString *cstr);
 #define cstr_reset(cstr) cstr_free(cstr)
 static void add_char(CString *cstr, int c);
 
-static Sym *sym_push2(Sym **ps, int v, int t, long c);
-static Sym *sym_find2(Sym *s, int v);
-static inline Sym *struct_find(int v);
-static inline Sym *sym_find(int v);
-static Sym *sym_push(int v, CType *type, int r, int c);
-static Sym *global_identifier_push(int v, int t, int c);
-static void sym_pop(Sym **ptop, Sym *b);
+static TokenSym *sym_push2(TokenSym **ps, int v, int t, long c);
+static TokenSym *sym_find2(TokenSym *s, int v);
+static inline TokenSym *struct_find(int v);
+static inline TokenSym *sym_find(int v);
+static TokenSym *sym_push(int v, CType *type, int r, int c);
+static TokenSym *global_identifier_push(int v, int t, int c);
+static void sym_pop(TokenSym **ptop, TokenSym *b);
 
 BufferedFile *tcc_open(TCCState *s1, const char *filename);
 void tcc_close(BufferedFile *bf);
@@ -573,12 +573,12 @@ void dynarray_reset(void *pp, int *n)
 }
 
 /* symbol allocator */
-static Sym *__sym_malloc(void)
+static TokenSym *__sym_malloc(void)
 {
-    Sym *sym_pool, *sym, *last_sym;
+    TokenSym *sym_pool, *sym, *last_sym;
     int i;
 
-    sym_pool = tcc_malloc(SYM_POOL_NB * sizeof(Sym));
+    sym_pool = tcc_malloc(SYM_POOL_NB * sizeof(TokenSym));
     dynarray_add(&sym_pools, &nb_sym_pools, sym_pool);
 
     last_sym = sym_free_first;
@@ -592,9 +592,9 @@ static Sym *__sym_malloc(void)
     return last_sym;
 }
 
-static inline Sym *sym_malloc(void)
+static inline TokenSym *sym_malloc(void)
 {
-    Sym *sym;
+    TokenSym *sym;
     sym = sym_free_first;
     if (!sym)
         sym = __sym_malloc();
@@ -602,7 +602,7 @@ static inline Sym *sym_malloc(void)
     return sym;
 }
 
-static inline void sym_free(Sym *sym)
+static inline void sym_free(TokenSym *sym)
 {
     sym->next = sym_free_first;
     sym_free_first = sym;
@@ -697,10 +697,10 @@ Section *find_section(TCCState *s1, const char *name)
 /* update sym->c so that it points to an external symbol in section
    'section' with value 'value' */
 static void put_extern_sym2(
-    Sym *sym, Section *section, unsigned long value, unsigned long size, int can_add_underscore)
+    TokenSym *sym, Section *section, unsigned long value, unsigned long size, int can_add_underscore)
 {
     int sym_type, sym_bind, sh_num, info, other, attr;
-    ElfW(Sym) * esym;
+    ElfW(TokenSym) * esym;
     const char *name;
     char buf1[256];
 
@@ -794,7 +794,7 @@ static void put_extern_sym2(
         info = ELFW(ST_INFO)(sym_bind, sym_type);
         sym->c = add_elf_sym(symtab_section, value, size, info, other, sh_num, name);
     } else {
-        esym = &((ElfW(Sym) *) symtab_section->data)[sym->c];
+        esym = &((ElfW(TokenSym) *) symtab_section->data)[sym->c];
         esym->st_value = value;
         esym->st_size = size;
         esym->st_shndx = sh_num;
@@ -802,13 +802,13 @@ static void put_extern_sym2(
     }
 }
 
-static void put_extern_sym(Sym *sym, Section *section, unsigned long value, unsigned long size)
+static void put_extern_sym(TokenSym *sym, Section *section, unsigned long value, unsigned long size)
 {
     put_extern_sym2(sym, section, value, size, 1);
 }
 
 /* add a new relocation entry to symbol 'sym' in section 's' */
-static void greloc(Section *s, Sym *sym, unsigned long offset, int type)
+static void greloc(Section *s, TokenSym *sym, unsigned long offset, int type)
 {
     int c = 0;
     if (sym) {
@@ -1031,9 +1031,9 @@ static void add_char(CString *cstr, int c)
 }
 
 /* push, without hashing */
-static Sym *sym_push2(Sym **ps, int v, int t, long c)
+static TokenSym *sym_push2(TokenSym **ps, int v, int t, long c)
 {
-    Sym *s;
+    TokenSym *s;
     s = sym_malloc();
     s->v = v;
     s->type.t = t;
@@ -1051,7 +1051,7 @@ static Sym *sym_push2(Sym **ps, int v, int t, long c)
 
 /* find a symbol and return its associated structure. 's' is the top
    of the symbol stack */
-static Sym *sym_find2(Sym *s, int v)
+static TokenSym *sym_find2(TokenSym *s, int v)
 {
     while (s) {
         if (s->v == v)
@@ -1062,7 +1062,7 @@ static Sym *sym_find2(Sym *s, int v)
 }
 
 /* structure lookup */
-static inline Sym *struct_find(int v)
+static inline TokenSym *struct_find(int v)
 {
     v -= TOK_IDENT;
     if ((unsigned) v >= (unsigned) (tok_ident - TOK_IDENT))
@@ -1071,7 +1071,7 @@ static inline Sym *struct_find(int v)
 }
 
 /* find an identifier */
-static inline Sym *sym_find(int v)
+static inline TokenSym *sym_find(int v)
 {
     v -= TOK_IDENT;
     if ((unsigned) v >= (unsigned) (tok_ident - TOK_IDENT))
@@ -1080,9 +1080,9 @@ static inline Sym *sym_find(int v)
 }
 
 /* push a given symbol on the symbol stack */
-static Sym *sym_push(int v, CType *type, int r, int c)
+static TokenSym *sym_push(int v, CType *type, int r, int c)
 {
-    Sym *s, **ps;
+    TokenSym *s, **ps;
     TokenSym *ts;
 
     if (local_stack)
@@ -1108,9 +1108,9 @@ static Sym *sym_push(int v, CType *type, int r, int c)
 }
 
 /* push a global identifier */
-static Sym *global_identifier_push(int v, int t, int c)
+static TokenSym *global_identifier_push(int v, int t, int c)
 {
-    Sym *s, **ps;
+    TokenSym *s, **ps;
     s = sym_push2(&global_stack, v, t, c);
     /* don't record anonymous symbol */
     if (v < SYM_FIRST_ANOM) {
@@ -1126,9 +1126,9 @@ static Sym *global_identifier_push(int v, int t, int c)
 }
 
 /* pop symbols until top reaches 'b' */
-static void sym_pop(Sym **ptop, Sym *b)
+static void sym_pop(TokenSym **ptop, TokenSym *b)
 {
-    Sym *s, *ss, **ps;
+    TokenSym *s, *ss, **ps;
     TokenSym *ts;
     int v;
 
@@ -1197,7 +1197,7 @@ void tcc_close(BufferedFile *bf)
 /* compile the C file opened in 'file'. Return non zero if errors. */
 static int tcc_compile(TCCState *s1)
 {
-    Sym *define_start;
+    TokenSym *define_start;
     char buf[512];
     volatile int section_sym;
 
@@ -1263,7 +1263,7 @@ static int tcc_compile(TCCState *s1)
 #if 0
     /* define 'void *alloca(unsigned int)' builtin function */
     {
-        Sym *s1;
+        TokenSym *s1;
 
         p = anon_sym++;
         sym = sym_push(p, mk_pointer(VT_VOID), FUNC_CDECL, FUNC_NEW);
@@ -1372,7 +1372,7 @@ void tcc_define_symbol(TCCState *s1, const char *sym, const char *value)
 void tcc_undefine_symbol(TCCState *s1, const char *sym)
 {
     TokenSym *ts;
-    Sym *s;
+    TokenSym *s;
     ts = tok_alloc(sym, strlen(sym));
     s = define_find(ts->tok);
     /* undefine symbol by putting an invalid name */

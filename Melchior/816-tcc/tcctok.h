@@ -1,3 +1,7 @@
+#pragma once
+
+#include "tcc.h"
+
 /* keywords */
 DEF(TOK_INT, "int")
 DEF(TOK_VOID, "void")

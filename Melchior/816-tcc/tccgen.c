@@ -113,12 +113,12 @@ void vpushll(long long v)
  * @param sec Pointer to the Section representing the section.
  * @param offset The offset within the section.
  * @param size The size of the section.
- * @return Pointer to the Sym representing the static symbol.
+ * @return Pointer to the TokenSym representing the static symbol.
  */
-static Sym *get_sym_ref(CType *type, Section *sec, unsigned long offset, unsigned long size)
+static TokenSym *get_sym_ref(CType *type, Section *sec, unsigned long offset, unsigned long size)
 {
     int v;
-    Sym *sym;
+    TokenSym *sym;
 
     v = anon_sym++;
     sym = global_identifier_push(v, type->t | VT_STATIC, 0);
@@ -159,11 +159,11 @@ static void vpush_ref(CType *type, Section *sec, unsigned long offset, unsigned 
  * @param v The value of the symbol.
  * @param type Pointer to the CType representing the type of the symbol.
  * @param r The register.
- * @return Pointer to the Sym representing the external symbol.
+ * @return Pointer to the TokenSym representing the external symbol.
  */
-static Sym *external_global_sym(int v, CType *type, int r)
+static TokenSym *external_global_sym(int v, CType *type, int r)
 {
-    Sym *s;
+    TokenSym *s;
 
     s = sym_find(v);
     if (!s) {
@@ -181,11 +181,11 @@ static Sym *external_global_sym(int v, CType *type, int r)
  * @param v The value of the symbol.
  * @param type Pointer to the CType representing the type of the symbol.
  * @param r The register.
- * @return Pointer to the Sym representing the external symbol.
+ * @return Pointer to the TokenSym representing the external symbol.
  */
-static Sym *external_sym(int v, CType *type, int r)
+static TokenSym *external_sym(int v, CType *type, int r)
 {
-    Sym *s;
+    TokenSym *s;
 
     s = sym_find(v);
     if (!s) {
@@ -210,7 +210,7 @@ static Sym *external_sym(int v, CType *type, int r)
  */
 static void vpush_global_sym(CType *type, int v)
 {
-    Sym *sym;
+    TokenSym *sym;
     CValue cval;
 
     sym = external_global_sym(v, type, 0);
@@ -567,7 +567,7 @@ int gv(int rc)
         r = gv(rc);
     } else {
         if (is_float(vtop->type.t) && (vtop->r & (VT_VALMASK | VT_LVAL)) == VT_CONST) {
-            Sym *sym;
+            TokenSym *sym;
             int *ptr;
             unsigned long offset;
 #if defined(TCC_TARGET_ARM) && !defined(TCC_ARM_VFP)
@@ -2051,7 +2051,7 @@ static void gen_cast(CType *type)
 /* return type size. Put alignment at 'a' */
 static int type_size(CType *type, int *a)
 {
-    Sym *s;
+    TokenSym *s;
     int bt;
 
     bt = type->t & VT_BTYPE;
@@ -2135,7 +2135,7 @@ static inline CType *pointed_type(CType *type)
 /* modify type so that its it is a pointer to type. */
 static void mk_pointer(CType *type)
 {
-    Sym *s;
+    TokenSym *s;
     s = sym_push(SYM_FIELD, type, 0, -1);
     type->t = VT_PTR | (type->t & ~VT_TYPE);
     type->ref = s;
@@ -2144,7 +2144,7 @@ static void mk_pointer(CType *type)
 /* compare function types. OLD functions match any new functions */
 static int is_compatible_func(CType *type1, CType *type2)
 {
-    Sym *s1, *s2;
+    TokenSym *s1, *s2;
 
     s1 = type1->ref;
     s2 = type2->ref;
@@ -2227,7 +2227,7 @@ static int is_compatible_parameter_types(CType *type1, CType *type2)
 void type_to_str(char *buf, int buf_size, CType *type, const char *varstr)
 {
     int bt, v, t;
-    Sym *s, *sa;
+    TokenSym *s, *sa;
     char buf1[256];
     const char *tstr;
 
@@ -2750,7 +2750,7 @@ static void struct_decl(CType *type, int u, int tdef)
 {
     int a, v, size, align, maxalign, c, offset, flexible;
     int bit_size, bit_pos, bsize, bt, lbit_pos, prevbt, resize;
-    Sym *s, *ss, *ass, **ps;
+    TokenSym *s, *ss, *ass, **ps;
     AttributeDef ad;
     CType type1, btype;
 
@@ -2957,7 +2957,7 @@ do_decl:
 static int parse_btype(CType *type, AttributeDef *ad)
 {
     int t, u, type_found, typespec_found, typedef_found;
-    Sym *s;
+    TokenSym *s;
     CType type1;
 
     memset(ad, 0, sizeof(AttributeDef));
@@ -3171,7 +3171,7 @@ static inline void convert_parameter_type(CType *pt)
 static void post_type(CType *type, AttributeDef *ad)
 {
     int n, l, t1, arg_size, align;
-    Sym **plast, *s, *first;
+    TokenSym **plast, *s, *first;
     AttributeDef ad1;
     CType pt;
 
@@ -3288,7 +3288,7 @@ static void post_type(CType *type, AttributeDef *ad)
  */
 static void type_decl(CType *type, AttributeDef *ad, int *v, int td)
 {
-    Sym *s;
+    TokenSym *s;
     CType type1, *type2;
     int qualifiers;
 
@@ -3400,7 +3400,7 @@ static void indir(void)
 }
 
 /* pass a parameter to a function and do type checking and casting */
-static void gfunc_param_typed(Sym *func, Sym *arg)
+static void gfunc_param_typed(TokenSym *func, TokenSym *arg)
 {
     int func_type;
     CType type;
@@ -3462,7 +3462,7 @@ static void unary(void)
 {
     int n, t, align, size, r;
     CType type;
-    Sym *s;
+    TokenSym *s;
     AttributeDef ad;
 
     /* XXX: GCC 2.95.3 does not generate a table although it should be
@@ -3847,7 +3847,7 @@ tok_next:
             skip(']');
         } else if (tok == '(') {
             SValue ret;
-            Sym *sa;
+            TokenSym *sa;
             int nb_args;
 
             /* function call  */
@@ -4357,7 +4357,7 @@ static void label_or_decl(int l)
 static void block(int *bsym, int *csym, int *case_sym, int *def_sym, int case_reg, int is_expr)
 {
     int a, b, c, d;
-    Sym *s;
+    TokenSym *s;
 
     /* generate line number info */
     if (tcc_state->do_debug && (last_line_num != file->line_num || last_ind != ind)) {
@@ -4402,7 +4402,7 @@ static void block(int *bsym, int *csym, int *case_sym, int *def_sym, int case_re
         gsym(a);
         gsym_addr(b, d);
     } else if (tok == '{') {
-        Sym *llabel;
+        TokenSym *llabel;
 
         next();
         /* record local declaration stack position */
@@ -4438,7 +4438,7 @@ static void block(int *bsym, int *csym, int *case_sym, int *def_sym, int case_re
         if (is_expr) {
             /* XXX: this solution makes only valgrind happy...
                triggered by gcc.c-torture/execute/20000917-1.c */
-            Sym *p;
+            TokenSym *p;
             switch (vtop->type.t & VT_BTYPE) {
             case VT_PTR:
             case VT_STRUCT:
@@ -4715,9 +4715,9 @@ static void block(int *bsym, int *csym, int *case_sym, int *def_sym, int case_re
    value. 'size_only' is true if only size info is needed (only used
    in arrays) */
 static void decl_designator(
-    CType *type, Section *sec, unsigned long c, int *cur_index, Sym **cur_field, int size_only)
+    CType *type, Section *sec, unsigned long c, int *cur_index, TokenSym **cur_field, int size_only)
 {
-    Sym *s, *f;
+    TokenSym *s, *f;
     int notfirst, index, index_last, align, l, nb_elems, elem_size;
     CType type1;
 
@@ -4969,7 +4969,7 @@ static void decl_initializer(CType *type, Section *sec, unsigned long c, int fir
 {
     int index, array_length, n, no_oblock, nb, parlevel, parlevel1, i;
     int size1, align1, expr_type;
-    Sym *s, *f;
+    TokenSym *s, *f;
     CType *t1;
 
     if (type->t & VT_ARRAY) {
@@ -5313,7 +5313,7 @@ static void decl_initializer_alloc(
             vset(type, r, addr);
         }
     } else {
-        Sym *sym;
+        TokenSym *sym;
         int is_const_var = 0;
 
         sym = NULL;
@@ -5393,11 +5393,11 @@ static void decl_initializer_alloc(
             if (sec) {
                 put_extern_sym(sym, sec, addr, size);
             } else {
-                ElfW(Sym) * esym;
+                ElfW(TokenSym) * esym;
                 /* put a common area */
                 put_extern_sym(sym, NULL, align, size);
                 /* XXX: find a nicer way */
-                esym = &((ElfW(Sym) *) symtab_section->data)[sym->c];
+                esym = &((ElfW(TokenSym) *) symtab_section->data)[sym->c];
                 esym->st_shndx = SHN_COMMON;
             }
         } else {
@@ -5434,7 +5434,7 @@ static void decl_initializer_alloc(
 no_alloc:;
 }
 
-void put_func_debug(Sym *sym)
+void put_func_debug(TokenSym *sym)
 {
     char buf[512];
 
@@ -5450,11 +5450,11 @@ void put_func_debug(Sym *sym)
 
 /* parse an old style function declaration list */
 /* XXX: check multiple parameter */
-static void func_decl_list(Sym *func_sym)
+static void func_decl_list(TokenSym *func_sym)
 {
     AttributeDef ad;
     int v;
-    Sym *s;
+    TokenSym *s;
     CType btype, type;
 
     /* parse each declaration */
@@ -5495,7 +5495,7 @@ static void func_decl_list(Sym *func_sym)
 
 /* parse a function defined by symbol 'sym' and generate its code in
    'cur_text_section' */
-static void gen_function(Sym *sym)
+static void gen_function(TokenSym *sym)
 {
     int saved_nocode_wanted = nocode_wanted;
     nocode_wanted = 0;
@@ -5519,7 +5519,7 @@ static void gen_function(Sym *sym)
     sym_pop(&local_stack, NULL); /* reset local stack */
     /* end of function */
     /* patch symbol size */
-    ((ElfW(Sym) *) symtab_section->data)[sym->c].st_size = ind - func_ind;
+    ((ElfW(TokenSym) *) symtab_section->data)[sym->c].st_size = ind - func_ind;
     if (tcc_state->do_debug) {
         put_stabn(N_FUN, 0, 0, ind - func_ind);
     }
@@ -5533,7 +5533,7 @@ static void gen_function(Sym *sym)
 
 static void gen_inline_functions(void)
 {
-    Sym *sym;
+    TokenSym *sym;
     int *str, inline_generated, i;
     struct InlineFunc *fn;
 
@@ -5578,7 +5578,7 @@ static void decl(int l)
 {
     int v, has_init, r;
     CType type, btype;
-    Sym *sym;
+    TokenSym *sym;
     AttributeDef ad;
 
     while (1) {
