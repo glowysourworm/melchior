@@ -1,0 +1,8 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:avaEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"			 
+             x:Class="Melchior.SimpleTextEditor">
+  <avaEdit:TextEditor x:Name="Editor"
+					  ShowLineNumbers="True"
+					  FontFamily="Cascadia Code,Consolas,Menlo,Monospace" />
+</UserControl>

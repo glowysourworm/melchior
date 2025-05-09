@@ -27,4 +27,10 @@
   <ItemGroup>
     <Folder Include="Control\Interface\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Control\SimpleTextEditor.axaml.cs">
+      <DependentUpon>SimpleTextEditor.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

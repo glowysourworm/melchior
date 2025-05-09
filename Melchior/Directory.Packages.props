@@ -18,6 +18,9 @@
     <PackageVersion Include="AvaloniaEdit.TextMate" Version="11.3.0" />
     <PackageVersion Include="AvaloniaEdit.TextMate.Grammars" Version="0.10.12" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageVersion Include="Dock.Avalonia" Version="11.3.0" />
+    <PackageVersion Include="Dock.Model.Mvvm" Version="11.3.0" />
+    <PackageVersion Include="Eremex.Avalonia.Controls" Version="1.1.130" />
     <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.1" />
   </ItemGroup>
 </Project>
